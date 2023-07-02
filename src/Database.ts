@@ -1,14 +1,8 @@
+import { IRecord } from 'interfaces/IRecord';
 import crypto from 'crypto';
 
-interface IRecords {
-  id?: string;
-  username: string;
-  age: number;
-  hobbies: string[];
-}
-
 export default class Database {
-  private records: IRecords[] = [
+  private records: IRecord[] = [
     { id: '3e7253ef-ba3c-4cf5-a160-9cf2392692ab', username: 'first1', age: 16, hobbies: ['dancing'] },
     { id: '2bd8b494-899e-496a-aa94-1ca20d013633', username: 'first2', age: 18, hobbies: [] },
     { id: '5919d042-abb2-4749-b000-327cb5605f76', username: 'first3', age: 20, hobbies: ['playing, skating'] },
@@ -20,18 +14,18 @@ export default class Database {
   }
 
   getRecord(id: string) {
-    return this.records.filter((record) => record.id === id);
+    return this.records.filter((record) => record.id === id)[0];
   }
 
-  createRecord(record: IRecords) {
+  createRecord(record: IRecord) {
     record['id'] = this.checkUUID();
     this.records.push(record);
   }
 
-  updateRecord(id: string, record: IRecords) {
+  updateRecord(id: string, record: IRecord) {
     const updatedRecords = [...this.records];
     const index = updatedRecords.findIndex((record) => record.id === id);
-    updatedRecords[index] = record;
+    updatedRecords[index] = { ...record, id };
     this.records = updatedRecords;
   }
 

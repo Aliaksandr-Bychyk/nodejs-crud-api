@@ -1,6 +1,8 @@
+import { IRecord } from 'interfaces/IRecord.ts';
 import http from 'node:http';
 import Database from './Database.ts';
 import path from 'node:path';
+import url from 'node:url';
 
 const database = new Database();
 
@@ -10,7 +12,7 @@ const server = http.createServer((req, res) => {
   [
     { method: 'GET', handler: () => handleGet(req, res) },
     { method: 'POST', handler: () => handlePost(req, res) },
-    { method: 'PUT', handler: handlePost },
+    { method: 'PUT', handler: () => handlePut(req, res) },
     { method: 'DELETE', handler: handlePost },
   ].forEach((request) => {
     if (request.method === req.method) request.handler(req, res);
@@ -28,7 +30,7 @@ function handleGet(req: http.IncomingMessage, res: http.ServerResponse<http.Inco
   if (dirname === '/api/users') {
     if (isUUID(basename)) {
       const record = database.getRecord(basename);
-      if (record.length === 1) {
+      if (record) {
         res.statusCode = 200;
         res.end(JSON.stringify(record));
       } else {
@@ -52,9 +54,9 @@ function isUUID(uuid: string) {
 
 function handlePost(req: http.IncomingMessage, res: http.ServerResponse<http.IncomingMessage>) {
   const dirname = path.dirname(req.url as string);
-  const basename = path.basename(req.url as string);
+
   if (dirname === '/api/users') {
-    const record = getRecordObj(basename);
+    const record = getRecordObj(req);
     if (record) {
       res.statusCode = 201;
       database.createRecord(record);
@@ -66,19 +68,46 @@ function handlePost(req: http.IncomingMessage, res: http.ServerResponse<http.Inc
   }
 }
 
-function getRecordObj(str: string) {
-  if (['username', 'age', 'hobbies'].map((key) => str.includes(key)).reduce((acc, cur) => acc && cur)) {
+function getRecordObj(req: http.IncomingMessage): IRecord | null {
+  const { query } = JSON.parse(JSON.stringify(url.parse(req.url as string, true)));
+  if (['username', 'age', 'hobbies'].map((key) => query.hasOwnProperty(key)).reduce((acc, cur) => acc && cur)) {
     return {
-      username: str.slice(10, str.indexOf('&age')),
-      age: +str.slice(str.indexOf('&age=') + 5, str.indexOf('&hobbies')),
-      hobbies: str
-        .slice(str.indexOf('[') + 1, str.indexOf(']'))
-        .replaceAll('%22', '')
-        .replaceAll('%20', '')
-        .split(','),
+      username: query.username,
+      age: +query.age,
+      hobbies: JSON.parse(query.hobbies),
     };
   } else {
     return null;
+  }
+}
+
+function handlePut(req: http.IncomingMessage, res: http.ServerResponse<http.IncomingMessage>) {
+  const dirname = path.dirname(req.url as string);
+  const { pathname } = url.parse(req.url as string, true);
+  const basename = path.basename(pathname as string);
+
+  if (dirname === '/api/users') {
+    if (isUUID(basename)) {
+      const record = database.getRecord(basename);
+      if (record) {
+        const getRecord = getRecordObj(req);
+        if (getRecord) {
+          console.log(1);
+          res.statusCode = 200;
+          res.end('Record updated');
+          database.updateRecord(record.id as string, getRecord);
+        } else {
+          res.statusCode = 400;
+          res.end('Error: body does not contain required fields');
+        }
+      } else {
+        res.statusCode = 404;
+        res.end("Error: userId doesn't exist");
+      }
+    } else {
+      res.statusCode = 400;
+      res.end('Error: userId is invalid (not uuid)');
+    }
   }
 }
 
