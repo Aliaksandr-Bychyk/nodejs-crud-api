@@ -1,4 +1,4 @@
-import { IRecord } from 'interfaces/IRecord';
+import { IRecord } from './interfaces/IRecord';
 import crypto from 'crypto';
 
 export default class Database {

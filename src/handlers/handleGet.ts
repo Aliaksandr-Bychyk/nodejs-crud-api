@@ -1,7 +1,7 @@
 import http from 'node:http';
-import Database from '../Database.ts';
+import Database from '../Database';
 import path from 'node:path';
-import isUUID from '../utils/isUUID.ts';
+import isUUID from '../utils/isUUID';
 
 function handleGet(req: http.IncomingMessage, res: http.ServerResponse<http.IncomingMessage>, database: Database) {
   const dirname = path.dirname(req.url as string);

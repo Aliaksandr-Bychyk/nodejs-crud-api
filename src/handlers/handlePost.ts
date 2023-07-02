@@ -1,7 +1,7 @@
 import http from 'node:http';
-import Database from '../Database.ts';
+import Database from '../Database';
 import path from 'node:path';
-import getRecordObj from '../utils/getRecordObj.ts';
+import getRecordObj from '../utils/getRecordObj';
 
 function handlePost(req: http.IncomingMessage, res: http.ServerResponse<http.IncomingMessage>, database: Database) {
   const dirname = path.dirname(req.url as string);

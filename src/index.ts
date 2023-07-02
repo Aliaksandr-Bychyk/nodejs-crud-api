@@ -1,9 +1,9 @@
 import http from 'node:http';
-import Database from './Database.ts';
-import handleGet from './handlers/handleGet.ts';
-import handlePut from './handlers/handlePut.ts';
-import handlePost from './handlers/handlePost.ts';
-import handleDelete from './handlers/handleDelete.ts';
+import Database from './Database';
+import handleGet from './handlers/handleGet';
+import handlePut from './handlers/handlePut';
+import handlePost from './handlers/handlePost';
+import handleDelete from './handlers/handleDelete';
 import { config } from 'dotenv';
 
 config();

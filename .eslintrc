@@ -14,5 +14,6 @@
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint/eslint-plugin"],
-  "rules": {}
+  "rules": {},
+  "exclude": ["./dist"]
 }

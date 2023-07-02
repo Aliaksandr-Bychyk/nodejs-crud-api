@@ -1,9 +1,9 @@
 import http from 'node:http';
-import Database from '../Database.ts';
+import Database from '../Database';
 import path from 'node:path';
 import url from 'node:url';
-import getRecordObj from '../utils/getRecordObj.ts';
-import isUUID from '../utils/isUUID.ts';
+import getRecordObj from '../utils/getRecordObj';
+import isUUID from '../utils/isUUID';
 
 function handlePut(req: http.IncomingMessage, res: http.ServerResponse<http.IncomingMessage>, database: Database) {
   const dirname = path.dirname(req.url as string);

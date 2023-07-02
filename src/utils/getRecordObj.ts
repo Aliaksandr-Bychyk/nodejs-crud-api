@@ -1,4 +1,4 @@
-import { IRecord } from 'interfaces/IRecord.ts';
+import { IRecord } from '../interfaces/IRecord';
 import http from 'node:http';
 import url from 'node:url';
 
