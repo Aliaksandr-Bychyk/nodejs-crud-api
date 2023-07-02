@@ -10,14 +10,19 @@ const database = new Database();
 const port = Number(process.env.PORT) || 3000;
 
 const server = http.createServer((req, res) => {
-  [
-    { method: 'GET', handler: () => handleGet(req, res, database) },
-    { method: 'POST', handler: () => handlePost(req, res, database) },
-    { method: 'PUT', handler: () => handlePut(req, res, database) },
-    { method: 'DELETE', handler: () => handleDelete(req, res, database) },
-  ].forEach((request) => {
-    if (request.method === req.method) request.handler();
-  });
+  try {
+    [
+      { method: 'GET', handler: () => handleGet(req, res, database) },
+      { method: 'POST', handler: () => handlePost(req, res, database) },
+      { method: 'PUT', handler: () => handlePut(req, res, database) },
+      { method: 'DELETE', handler: () => handleDelete(req, res, database) },
+    ].forEach((request) => {
+      if (request.method === req.method) request.handler();
+    });
+  } catch (error) {
+    res.statusCode = 500;
+    res.end(`ERROR: ${(error as Error).message}`);
+  }
 });
 
 server.listen(port, () => {
