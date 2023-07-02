@@ -16,6 +16,9 @@ function handlePost(req: http.IncomingMessage, res: http.ServerResponse<http.Inc
       res.statusCode = 400;
       res.end('Error: body does not contain required fields');
     }
+  } else {
+    res.statusCode = 404;
+    res.end('ERROR: Requests to non-existing endpoints');
   }
 }
 

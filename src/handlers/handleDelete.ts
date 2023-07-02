@@ -22,6 +22,9 @@ function handleDelete(req: http.IncomingMessage, res: http.ServerResponse<http.I
       res.statusCode = 400;
       res.end('Error: userId is invalid (not uuid)');
     }
+  } else {
+    res.statusCode = 404;
+    res.end('ERROR: Requests to non-existing endpoints');
   }
 }
 
