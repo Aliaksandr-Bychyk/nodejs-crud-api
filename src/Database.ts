@@ -1,5 +1,7 @@
+import crypto from 'crypto';
+
 interface IRecords {
-  id: string;
+  id?: string;
   username: string;
   age: number;
   hobbies: string[];
@@ -7,10 +9,10 @@ interface IRecords {
 
 export default class Database {
   private records: IRecords[] = [
-    { id: '1', username: 'first1', age: 16, hobbies: ['dancing'] },
-    { id: '2', username: 'first2', age: 18, hobbies: [] },
-    { id: '3', username: 'first3', age: 20, hobbies: ['paying, skating'] },
-    { id: '4', username: 'first4', age: 22, hobbies: [] },
+    { id: '3e7253ef-ba3c-4cf5-a160-9cf2392692ab', username: 'first1', age: 16, hobbies: ['dancing'] },
+    { id: '2bd8b494-899e-496a-aa94-1ca20d013633', username: 'first2', age: 18, hobbies: [] },
+    { id: '5919d042-abb2-4749-b000-327cb5605f76', username: 'first3', age: 20, hobbies: ['playing, skating'] },
+    { id: '1978708c-8def-4e35-a640-3e1808d2faa1', username: 'first4', age: 22, hobbies: [] },
   ];
 
   getRecords() {
@@ -18,11 +20,11 @@ export default class Database {
   }
 
   getRecord(id: string) {
-    return this.records[id as keyof typeof this.records];
+    return this.records.filter((record) => record.id === id);
   }
 
   createRecord(record: IRecords) {
-    record['id'] = (this.records.length + 1).toString();
+    record['id'] = this.checkUUID();
     this.records.push(record);
   }
 
@@ -36,5 +38,13 @@ export default class Database {
   deleteRecord(id: string) {
     const updatedRecords = [...this.records];
     this.records = updatedRecords.filter((record) => record.id !== id);
+  }
+
+  private checkUUID() {
+    let uuid = crypto.randomUUID();
+    this.records.forEach((record) => {
+      if (record.id === uuid) uuid = this.checkUUID();
+    });
+    return uuid;
   }
 }
