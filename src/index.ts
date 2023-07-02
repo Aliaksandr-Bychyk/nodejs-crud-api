@@ -4,10 +4,13 @@ import handleGet from './handlers/handleGet.ts';
 import handlePut from './handlers/handlePut.ts';
 import handlePost from './handlers/handlePost.ts';
 import handleDelete from './handlers/handleDelete.ts';
+import { config } from 'dotenv';
+
+config();
 
 const database = new Database();
 
-const port = Number(process.env.PORT) || 3000;
+const port = process.env.PORT || 3000;
 
 const server = http.createServer((req, res) => {
   try {
