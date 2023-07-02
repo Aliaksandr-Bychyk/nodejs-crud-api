@@ -5,7 +5,7 @@ interface IRecords {
   hobbies: string[];
 }
 
-export default class User {
+export default class Database {
   private records: IRecords[] = [
     { id: '1', username: 'first1', age: 16, hobbies: ['dancing'] },
     { id: '2', username: 'first2', age: 18, hobbies: [] },
