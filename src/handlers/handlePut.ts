@@ -16,7 +16,6 @@ function handlePut(req: http.IncomingMessage, res: http.ServerResponse<http.Inco
       if (record) {
         const getRecord = getRecordObj(req);
         if (getRecord) {
-          console.log(1);
           res.statusCode = 200;
           res.end('Record updated');
           database.updateRecord(record.id as string, getRecord);
