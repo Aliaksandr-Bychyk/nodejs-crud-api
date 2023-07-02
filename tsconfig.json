@@ -17,7 +17,5 @@
     "skipLibCheck": true,
     "strict": true,
     "strictPropertyInitialization": false,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
   },
 }
