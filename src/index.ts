@@ -1,33 +1,14 @@
-import http from 'node:http';
-import Database from './Database';
-import handleGet from './handlers/handleGet';
-import handlePut from './handlers/handlePut';
-import handlePost from './handlers/handlePost';
-import handleDelete from './handlers/handleDelete';
 import { config } from 'dotenv';
+import Database from './Database';
+import single from './single';
+import multi from './multi';
 
 config();
 
 const database = new Database();
-
-const port = process.env.PORT || 3000;
-
-const server = http.createServer((req, res) => {
-  try {
-    [
-      { method: 'GET', handler: () => handleGet(req, res, database) },
-      { method: 'POST', handler: () => handlePost(req, res, database) },
-      { method: 'PUT', handler: () => handlePut(req, res, database) },
-      { method: 'DELETE', handler: () => handleDelete(req, res, database) },
-    ].forEach((request) => {
-      if (request.method === req.method) request.handler();
-    });
-  } catch (error) {
-    res.statusCode = 500;
-    res.end(`ERROR: ${(error as Error).message}`);
-  }
-});
-
-server.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}/`);
-});
+const port = process.env.PORT || '3000';
+if (process.argv[2]) {
+  multi(port, database);
+} else {
+  single(port, database);
+}

@@ -9,7 +9,8 @@ function handleGet(req: http.IncomingMessage, res: http.ServerResponse<http.Inco
 
   if (dirname === '/api' && basename === 'users') {
     res.statusCode = 200;
-    res.end(JSON.stringify(database.getRecords()));
+    res.write(JSON.stringify(database.getRecords()));
+    res.end();
   } else if (dirname === '/api/users') {
     if (isUUID(basename)) {
       const record = database.getRecord(basename);
