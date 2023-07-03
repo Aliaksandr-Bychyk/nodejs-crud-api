@@ -34,6 +34,10 @@ export default class Database {
     this.records = updatedRecords.filter((record) => record.id !== id);
   }
 
+  reset() {
+    this.records = [];
+  }
+
   private checkUUID() {
     let uuid = crypto.randomUUID();
     this.records.forEach((record) => {

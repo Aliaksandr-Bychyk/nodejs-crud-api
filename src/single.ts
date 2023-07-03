@@ -25,7 +25,7 @@ const single = async (port: string, database: Database) => {
   server.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
   });
-  return server;
+  return () => server.close();
 };
 
 export default single;
