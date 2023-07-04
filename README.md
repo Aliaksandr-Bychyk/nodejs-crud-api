@@ -9,7 +9,9 @@ npm i
 ```
 
 Use `npm run start:dev` to run application in development mode.
+
 Use `npm run start:prod` to run application in production mode.
+
 Use `npm run start:mulit` to run application with a load balancer.
 
 Use `npm run test` to run tests or `npm run test:verbose` to run verbose tests.
